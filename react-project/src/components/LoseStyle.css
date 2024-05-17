@@ -1,0 +1,59 @@
+.loginbox2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lose_container {
+  padding: 7%;
+  width: 80%; /* 컨테이너 너비 조정 */
+  margin: 10px; /* 필요에 따라 조정 */
+}
+
+.lose_container-wrapper {
+  display: flex;
+  justify-content: space-around; /* 수평으로 배치하고 간격 조절 */
+  align-items: flex-start; /* 수직 정렬을 원하는 방식으로 조정 (예: flex-start, center) */
+}
+
+.lose_formBox {
+  text-align: left;
+  padding: 5%;
+  width: 95%;
+}
+
+h1 {
+  text-align: center;
+}
+
+label + input {
+  margin-left: 30px;
+}
+
+#imgcss {
+  margin: auto;
+  display: block;
+  padding-top: 30px;
+}
+
+.btn2 {
+  width: 100%;
+}
+
+label {
+  width: 10px;
+}
+
+p {
+  text-align: center;
+  font-size: 15px;
+}
+.form-label {
+  text-align: left;
+  white-space: nowrap;
+  width: 100px;
+}
+
+img {
+  width: 500px;
+}
