@@ -46,7 +46,7 @@ const Login = () => {
           <div className='mb-3 loginbox2'>
             <button type="submit" className="btn btn-primary btn2">로그인</button>
           </div>
-          <p><Link to={'/'}>아이디 혹은 비밀번호를 잃어버리셨나요?</Link></p>
+          <p><Link to={'/loginlose'}>아이디 혹은 비밀번호를 잃어버리셨나요?</Link></p>
         </div>
       </form>
     </div>
