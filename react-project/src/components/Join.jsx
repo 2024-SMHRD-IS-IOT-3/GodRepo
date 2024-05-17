@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./JoinStyle.css"
 import axios from '../axios';
+
 
 const Join = () => {
 
@@ -10,17 +11,48 @@ const Join = () => {
   const [name,setName] = useState('');
   const [nick,setNick] = useState('');
   const [phone,setPhone] = useState('');
-
+  
+  
   const handleAddmem=(e) => {
     e.preventDefault()
-    console.log("로그인 버튼 클릭")
+  
+    console.log("회원가입 버튼 클릭",)
 
+  
     axios.post("/addmem",{
       id : id,
       pw : pw,
+      pws : pws,
       name : name,
       nick : nick,
-      phone : phone
+      phone : phone,
+ 
+  }).then(res=>{console.log(res.data.result)
+
+    if(res.data.result === 'long'){
+      alert('아이디,비밀번호,닉네임을 모두 20글자이내로 맞춰주세요')
+    }else{
+      if(res.data.result === "dupid"){
+        alert('중복된 아이디입니다 다시입력해주세요')
+        
+      }else{
+          if(res.data.result === "notpw"){
+            alert('비밀번호확인이 잘못되었습니다')
+            
+          }else{
+            if(res.data.result === "success"){
+              alert('가입을 축하합니다')
+              window.location.href = "/"
+            }else{
+              alert('가입에 실패했습니다')
+            }
+          }
+         
+  
+      }
+    }
+
+    
   })
 
 

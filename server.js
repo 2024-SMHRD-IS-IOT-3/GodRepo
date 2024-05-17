@@ -21,22 +21,42 @@ app.get('/', (req, res) => {
 
 app.post("/addmem",async (req,res)=> {
     console.log("회원가입 시도")
-    let {id,pw,name,nick,phone} = req.body;
-    // let sql =`insert into user_info values(1,'${id}','${pw}','${name}','${nick}','${phone}')`
-
-    // try {
-    //     const connection = await conn();
-    //     // 이제 connection 객체를 사용하여 데이터베이스 작업을 수행할 수 있습니다.
+    console.log(req.body)
+    let {id,pw,name,nick,phone,pws} = req.body;
+    let sql =`insert into user_info values('${id}','${pw}','${name}','${nick}','${phone}','u', to_date(sysdate,'yyyy.mm.dd'))`
+    let sql2 = `select user_id from user_info where user_id = '${id}'`
+    try {
+        const connection = await conn();
+        // 이제 connection 객체를 사용하여 데이터베이스 작업을 수행할 수 있습니다.
         
-    //     // 예: 간단한 쿼리 실행
-    //     const result = await connection.execute(sql,[],{ autoCommit: true });
-    //     console.log('Row inserted:', result.rowsAffected);
-
-    //     // 연결 해제
-    //     await connection.close();
-    // } catch (error) {
-    //     console.error('데이터베이스 작업 중 오류가 발생했습니다:', error);
-    // }
+        // 예: 간단한 쿼리 실행
+        const result2 = await connection.execute(sql2);
+        console.log(result2.rows);
+        if(id.length<=20 && pw.length<=20 && nick.length<=20 ){
+                if (result2.rows && result2.rows.length > 0 && result2.rows[0][0] === id) {
+                    res.json({ result: "dupid" });
+                } else {
+                    if(pw === pws){
+                        const result = await connection.execute(sql, [], { autoCommit: true });
+                        if (result.rowsAffected > 0) {
+                            res.json({ result: "success" });
+                        } else {
+                            res.json({ result: "failed" });
+                        }
+                        }else{
+                            res.json({ result : "notpw"})
+                        }
+            }
+        }else{
+            res.json({result: 'long'})
+        }
+        
+        
+        // 연결 해제
+        await connection.close();
+    } catch (error) {
+        console.error('데이터베이스 작업 중 오류가 발생했습니다:', error);
+    }
 })
 
 app.post("/logintry",async (req,res)=>{
