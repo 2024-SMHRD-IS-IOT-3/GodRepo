@@ -7,6 +7,7 @@ import Board from './components/Board';
 import Iot from './components/Iot';
 import Join from './components/Join';
 import LoginLose from './components/LoginLose';
+import Mypage from './components/Mypage';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path = '/login' element={<Login/>}></Route>
         <Route path = '/join' element={<Join/>}></Route>
         <Route path = '/loginlose' element={<LoginLose></LoginLose>}></Route>
+        <Route path = '/mypage' element={<Mypage></Mypage>}></Route>
       </Routes>
     </div>
   );

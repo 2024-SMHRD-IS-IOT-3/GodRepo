@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const conn = require("./DB/db");
 const path = require("path");
+const multer  = require('multer');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -17,6 +18,12 @@ app.get("/", (req, res) => {
   app.use("index");
 });
 
+
+// 이미지 디비넣기
+// app.post("/upload",async (req,res)=>{
+// }
+
+// 회원가입 
 
 app.post("/addmem",async (req,res)=> {
     console.log("회원가입 시도")
@@ -61,6 +68,7 @@ app.post("/addmem",async (req,res)=> {
  
 
 
+// 로그인 
 
 app.post("/logintry", async (req, res) => {
   console.log("로그인 시도");
@@ -84,6 +92,9 @@ app.post("/logintry", async (req, res) => {
     console.error("데이터베이스 작업 중 오류가 발생했습니다:", error);
   }
 });
+
+// 아이디 찾기
+
 app.post("/idtry", async (req, res) => {
   console.log("아이디 찾기");
   let { name, phone } = req.body;
@@ -106,6 +117,9 @@ app.post("/idtry", async (req, res) => {
     console.error("데이터베이스 작업 중 오류가 발생했습니다:", error);
   }
 });
+
+// 비번찾기 
+
 app.post("/pwtry", async (req, res) => {
   console.log("비밀번호 찾기");
   let { id, name, phone } = req.body;
@@ -128,6 +142,8 @@ app.post("/pwtry", async (req, res) => {
     console.error("데이터베이스 작업 중 오류가 발생했습니다:", error);
   }
 });
+
+// 밥주기 데이터 보내기 
 
 app.post("/datat", async (req, res) => {
   console.log("데이터 전송 시도");
@@ -155,6 +171,8 @@ app.post("/datat", async (req, res) => {
   }
 });
 
+// 체중계데이터 받기
+
 app.post("/data", (req, res) => {
   const receivedData = req.body;
   console.log("전송받은 데이터는", receivedData);
@@ -170,3 +188,24 @@ app.get("/databasetest", (req, res) => {
 app.listen(3000, () => {
   console.log("Node.js server is running on port 3000");
 });
+
+// 이미지 저장
+// 이미지를 public/uploads 폴더에 저장하는 설정
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './react-project/public/img')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname))
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// 클라이언트에서 이미지를 받는 엔드포인트
+app.post('/upload', upload.single('img'), (req, res) => {
+    // 이미지 저장 후 public/uploads 폴더에 저장된 이미지의 경로를 클라이언트에게 전달
+    const imagePath = '/uploads/' + req.file.filename;
+    res.json({ imagePath });
+});
+
