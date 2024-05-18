@@ -6,6 +6,9 @@ const bodyParser = require("body-parser");
 const conn = require("./DB/db");
 const path = require("path");
 const multer  = require('multer');
+const fs = require('fs');
+
+const port = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -19,9 +22,45 @@ app.get("/", (req, res) => {
 });
 
 
-// 이미지 디비넣기
-// app.post("/upload",async (req,res)=>{
-// }
+// 이미지 업로드
+
+// 이미지 저장경로 설정
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      // 이미지를 저장할 폴더 경로
+      const saveImgDir = path.join(__dirname, '../../public/saveimg');
+      
+      // 저장할 폴더가 없다면
+      if (!fs.existsSync(saveImgDir)) {
+          fs.mkdirSync(saveImgDir, { recursive: true });
+      }
+      
+      cb(null, saveImgDir);
+  },
+  filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
+
+// 이미지 파일 업로드
+app.post('/api/upload', upload.single('image'),(req, res)=>{
+  const file = req.file;
+
+  if(!file) {
+    return res.status(400).send('업로드할 파일이 없습니다');
+  }
+
+  res.send({ message: '파일이 업로드 되었습니다', file});
+});
+
+// 업로드 서버시작 
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
+
+
+// 
 
 // 회원가입 
 
