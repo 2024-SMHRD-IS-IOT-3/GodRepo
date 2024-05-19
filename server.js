@@ -5,10 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const conn = require("./DB/db");
 const path = require("path");
-const multer  = require('multer');
-const fs = require('fs');
-
-const port = 5000;
+const multer = require("multer");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -21,99 +18,64 @@ app.get("/", (req, res) => {
   app.use("index");
 });
 
+// 이미지 디비넣기
+// app.post("/upload",async (req,res)=>{
+// }
 
-// 이미지 업로드
+// 회원가입
 
-// 이미지 저장경로 설정
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      // 이미지를 저장할 폴더 경로
-      const saveImgDir = path.join(__dirname, '../../public/saveimg');
-      
-      // 저장할 폴더가 없다면
-      if (!fs.existsSync(saveImgDir)) {
-          fs.mkdirSync(saveImgDir, { recursive: true });
-      }
-      
-      cb(null, saveImgDir);
-  },
-  filename: (req, file, cb) => {
-      cb(null, Date.now() + '-' + file.originalname);
-  },
-});
-const upload = multer({ storage: storage });
+app.post("/addmem", async (req, res) => {
+  console.log("회원가입 시도");
+  console.log(req.body);
+  let { id, pw, name, nick, phone, pws } = req.body;
+  let sql = `insert into user_info values('${id}','${pw}','${name}','${nick}','${phone}','u', to_date(sysdate,'yyyy.mm.dd'))`;
+  let sql2 = `select user_id from user_info where user_id = '${id}'`;
+  try {
+    const connection = await conn();
+    // 이제 connection 객체를 사용하여 데이터베이스 작업을 수행할 수 있습니다.
 
-// 이미지 파일 업로드
-app.post('/api/upload', upload.single('image'),(req, res)=>{
-  const file = req.file;
-
-  if(!file) {
-    return res.status(400).send('업로드할 파일이 없습니다');
-  }
-
-  res.send({ message: '파일이 업로드 되었습니다', file});
-});
-
-// 업로드 서버시작 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
-
-// 
-
-// 회원가입 
-
-app.post("/addmem",async (req,res)=> {
-    console.log("회원가입 시도")
-    console.log(req.body)
-    let {id,pw,name,nick,phone,pws} = req.body;
-    let sql =`insert into user_info values('${id}','${pw}','${name}','${nick}','${phone}','u', to_date(sysdate,'yyyy.mm.dd'))`
-    let sql2 = `select user_id from user_info where user_id = '${id}'`
-    try {
-        const connection = await conn();
-        // 이제 connection 객체를 사용하여 데이터베이스 작업을 수행할 수 있습니다.
-        
-        // 예: 간단한 쿼리 실행
-        const result2 = await connection.execute(sql2);
-        console.log(result2.rows);
-        if(id.length<=20 && pw.length<=20 && nick.length<=20 ){
-                if (result2.rows && result2.rows.length > 0 && result2.rows[0][0] === id) {
-                    res.json({ result: "dupid" });
-                } else {
-                    if(pw === pws){
-                        const result = await connection.execute(sql, [], { autoCommit: true });
-                        if (result.rowsAffected > 0) {
-                            res.json({ result: "success" });
-                        } else {
-                            res.json({ result: "failed" });
-                        }
-                        }else{
-                            res.json({ result : "notpw"})
-                        }
-            }
-        }else{
-            res.json({result: 'long'})
+    // 예: 간단한 쿼리 실행
+    const result2 = await connection.execute(sql2);
+    console.log(result2.rows);
+    if (id.length <= 20 && pw.length <= 20 && nick.length <= 20) {
+      if (
+        result2.rows &&
+        result2.rows.length > 0 &&
+        result2.rows[0][0] === id
+      ) {
+        res.json({ result: "dupid" });
+      } else {
+        if (pw === pws) {
+          const result = await connection.execute(sql, [], {
+            autoCommit: true,
+          });
+          if (result.rowsAffected > 0) {
+            res.json({ result: "success" });
+          } else {
+            res.json({ result: "failed" });
+          }
+        } else {
+          res.json({ result: "notpw" });
         }
-        
-        
-        // 연결 해제
-        await connection.close();
-    } catch (error) {
-        console.error('데이터베이스 작업 중 오류가 발생했습니다:', error);
+      }
+    } else {
+      res.json({ result: "long" });
     }
-})
 
- 
+    // 연결 해제
+    await connection.close();
+  } catch (error) {
+    console.error("데이터베이스 작업 중 오류가 발생했습니다:", error);
+  }
+});
 
-
-// 로그인 
+// 로그인
 
 app.post("/logintry", async (req, res) => {
   console.log("로그인 시도");
   let { id, pw } = req.body;
 
-  let sql = `select user_nick from user_info where user_id = '${id}' and user_pw = '${pw}'`;
+  let sql = `select * from user_info where user_id = '${id}' and user_pw = '${pw}'`;
   console.log(id, pw);
   // 여기서 데이터베이스 작업을 수행합니다.
   try {
@@ -157,7 +119,7 @@ app.post("/idtry", async (req, res) => {
   }
 });
 
-// 비번찾기 
+// 비번찾기
 
 app.post("/pwtry", async (req, res) => {
   console.log("비밀번호 찾기");
@@ -182,7 +144,7 @@ app.post("/pwtry", async (req, res) => {
   }
 });
 
-// 밥주기 데이터 보내기 
+// 밥주기 데이터 보내기
 
 app.post("/datat", async (req, res) => {
   console.log("데이터 전송 시도");
@@ -224,27 +186,26 @@ app.get("/databasetest", (req, res) => {
   console.log("디비 확인용 연결");
 });
 
-app.listen(3000, () => {
-  console.log("Node.js server is running on port 3000");
-});
-
 // 이미지 저장
 // 이미지를 public/uploads 폴더에 저장하는 설정
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './react-project/public/img')
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname))
-    }
+  destination: function (req, file, cb) {
+    cb(null, "./react-project/public/img");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
 });
 
 const upload = multer({ storage: storage });
 
 // 클라이언트에서 이미지를 받는 엔드포인트
-app.post('/upload', upload.single('img'), (req, res) => {
-    // 이미지 저장 후 public/uploads 폴더에 저장된 이미지의 경로를 클라이언트에게 전달
-    const imagePath = '/uploads/' + req.file.filename;
-    res.json({ imagePath });
+app.post("/upload", upload.single("img"), (req, res) => {
+  // 이미지 저장 후 public/uploads 폴더에 저장된 이미지의 경로를 클라이언트에게 전달
+  const imagePath = "/img/" + req.file.filename;
+  res.json({ imagePath });
 });
 
+app.listen(3000, () => {
+  console.log("Node.js server is running on port 3000");
+});
