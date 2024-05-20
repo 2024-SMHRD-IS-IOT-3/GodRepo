@@ -22,6 +22,24 @@ app.get("/", (req, res) => {
 // app.post("/upload",async (req,res)=>{
 // }
 
+let petnum = 3 // 펫식별자 변수설정
+// 펫 정보 등록
+app.post("/petinfo", async(req,res)=>{
+  console.log("펫정보 등록 시도")
+  console.log(req.body);
+  let {petName, petWeight, petBreed, userid} = req.body;
+  let sql = `insert into pet_infos values(${petnum},'${petName}','${petWeight}','${userid}', to_date(sysdate,'yyyy.mm.dd'),'${petBreed}')`;
+  try {
+    const connection = await conn();
+    const result = await connection.execute(sql, [], { autoCommit: true });
+    console.log("펫정보 등록 성공:", result);
+    res.status(200).send({ message: "펫정보가 성공적으로 등록되었습니다." });
+  } catch (error) {
+    console.error("펫정보 등록 실패:", error);
+    res.status(500).send({ message: "펫정보 등록에 실패했습니다." });
+  }
+})
+
 // 회원가입
 
 app.post("/addmem", async (req, res) => {

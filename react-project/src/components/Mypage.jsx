@@ -3,10 +3,30 @@ import axios from "../axios";
 import "./Mypage.css";
 
 const Mypage = () => {
+  const [petName, setPetName] = useState("");
+  const [petWeight, setPetWeight] = useState("");
+  const [petBreed, setPetBreed] = useState("")
+  ;
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  
+  const addPet = (e) => {
+    e.preventDefault();
+
+    console.log("펫정보 등록")
+
+    axios.post("/petinfo", {
+      petName : petName,
+      petWeight : petWeight,
+      petBreed : petBreed,
+      userid : JSON.parse(sessionStorage.getItem("user"))[0]
+    })
+  }
+
   const imgChange = (e) => {
     setSelectedFile(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   const uploadImg = async () => {
@@ -73,32 +93,82 @@ const Mypage = () => {
           borderRadius: "10px",
         }}
       >
-        <h5 className="card-title" style={{ textAlign: "center" }}>
-          마이펫
-        </h5>
-        <p className="card-text" style={{ textAlign: "center" }}>
-          마이펫마이펫
-        </p>
-        <input
-          type="file"
-          onChange={imgChange}
-          accept="image/*"
-          capture="camera"
-          style={{ display: "block", margin: "0 auto", marginBottom: "20px" }}
-        />
-        <button
-          onClick={uploadImg}
-          style={{ display: "block", margin: "0 auto" }}
-        >
-          이미지 업로드
-        </button>
-        {imageUrl && (
-          <div>
-            <h4>업로드된 이미지</h4>
-            <img src={imageUrl} alt="" style={{ maxWidth: "100%" }} />
-          </div>
-        )}
-        {/* 조건부 렌더링 */}
+        <div className="container">
+          <h1>펫 등록</h1>
+          <form onSubmit={addPet}>
+            <div className="formbox">
+              <div className="mb-3 loginbox2">
+                <label
+                  htmlFor="formGroupExampleInput1"
+                  className="form-label doglabel"
+                >
+                  펫이름
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput1"
+                  placeholder="아이디를 입력해주세요"
+                  onChange={(e)=>{setPetName(e.target.value)}}
+                />
+              </div>
+              <div className="mb-3 loginbox2">
+                <label
+                  htmlFor="formGroupExampleInput4"
+                  className="form-label doglabel"
+                >
+                  체중
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput4"
+                  placeholder="이름을 입력해주세요"
+                  onChange={(e)=>{setPetWeight(e.target.value)}}
+                />
+              </div>
+              <div className="mb-3 loginbox2">
+                <label
+                  htmlFor="formGroupExampleInput5"
+                  className="form-label doglabel"
+                >
+                  견종
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="formGroupExampleInput5"
+                  placeholder="사용하실 닉네임을 입력해주세요"
+                  onChange={(e)=>{setPetBreed(e.target.value)}}
+                />
+              </div>
+              <div className="mb-3 loginbox2">
+                <button type="submit" className="btn btn-primary btn2">
+                  펫등록
+                </button>
+              </div>
+            </div>
+          </form>
+          <input
+            type="file"
+            onChange={imgChange}
+            accept="image/*"
+            capture="camera"
+            style={{ display: "block", margin: "0 auto", marginBottom: "20px" }}
+          />
+          <button
+            onClick={uploadImg}
+            style={{ display: "block", margin: "0 auto" }}
+          >
+            펫 사진 추가
+          </button>
+          {imageUrl && (
+            <div>
+              <h4>추가된 펫 사진</h4>
+              <img src={imageUrl} alt="" style={{ maxWidth: "100%" }} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
