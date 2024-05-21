@@ -45,9 +45,9 @@ app.post("/petinfo", async(req,res)=>{
 // 펫 정보 가져오기
 
 app.post("/mydog", async (req, res) => {
-  console.log("마이펫조회 시도");
+  // console.log("마이펫조회 시도");
   let data = req.body.user
-  console.log(data)
+  // console.log(data)
   let sql = `select * from pet_infoss where user_id = '${data}' order by pet_idx`;
   
   // 여기서 데이터베이스 작업을 수행합니다.
@@ -57,7 +57,7 @@ app.post("/mydog", async (req, res) => {
 
     // 예: 간단한 쿼리 실행
     const result = await connection.execute(sql);
-    console.log("result:",result.rows);
+    // console.log("result:",result.rows);
     let petList ={
       pidx : [],
       petName : [],
@@ -67,7 +67,7 @@ app.post("/mydog", async (req, res) => {
       breed : [],
       img : []
     }
-    console.log("index : ",result.rows.length)
+    // console.log("index : ",result.rows.length)
     for (let i=0; i<result.rows.length;i++) {
       petList.pidx.push(result.rows[i][0]),
       petList.petName.push(result.rows[i][1]),

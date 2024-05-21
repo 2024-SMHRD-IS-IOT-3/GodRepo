@@ -9,7 +9,7 @@ async function connectToOracle() {
             password: 'smhrd3',
             connectString: 'project-db-cgi.smhrd.com:1524'
         });
-        console.log('Oracle 데이터베이스에 연결되었습니다.');
+        // console.log('Oracle 데이터베이스에 연결되었습니다.');
         return connection
     } 
     catch (error) {

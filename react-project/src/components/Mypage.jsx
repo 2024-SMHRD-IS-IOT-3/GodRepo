@@ -60,7 +60,11 @@ const Mypage = () => {
   };
 
   return (
+    <div className="background">
+      <h1 id="mypage">마이페이지</h1>
+      <hr />
     <div className="Myitems">
+  
       <div
         className="card"
         style={{
@@ -72,22 +76,33 @@ const Mypage = () => {
           borderRadius: "10px",
         }}
       >
-        <img
-          id="imgcss"
-          src="https://play-lh.googleusercontent.com/38AGKCqmbjZ9OuWx4YjssAz3Y0DTWbiM5HB0ove1pNBq_o9mtWfGszjZNxZdwt_vgHo=s200"
-          alt=""
-        />
+        
         {sessionStorage.getItem("user") && (
+          <div>
+            
           <ul>
             <li>
               <h5>회원정보</h5>
+              <hr />
+              <img
+          id="imgcss"
+          src="https://cdn-icons-png.flaticon.com/512/159/159833.png"
+          alt=""
+        />
+              <hr />
             </li>
-            <li>아이디 : {JSON.parse(sessionStorage.getItem("user"))[0]}</li>
+            {/* <li>아이디 : {JSON.parse(sessionStorage.getItem("user"))[0]}</li>
             <li>비밀번호 : {JSON.parse(sessionStorage.getItem("user"))[1]}</li>
             <li>이름 : {JSON.parse(sessionStorage.getItem("user"))[3]}</li>
             <li>전화번호 : {JSON.parse(sessionStorage.getItem("user"))[2]}</li>
-            <li>닉네임 : {JSON.parse(sessionStorage.getItem("user"))[4]}</li>
+            <li>닉네임 : {JSON.parse(sessionStorage.getItem("user"))[4]}</li> */}
+            <p className="userinfo">아이디 : {JSON.parse(sessionStorage.getItem("user"))[0]} </p>
+            <p className="userinfo">비밀번호 : {JSON.parse(sessionStorage.getItem("user"))[1]} </p>
+            <p className="userinfo">이름 : {JSON.parse(sessionStorage.getItem("user"))[3]}</p>
+            <p className="userinfo">전화번호 : {JSON.parse(sessionStorage.getItem("user"))[2]}</p>
+            <p className="userinfo">닉네임 : {JSON.parse(sessionStorage.getItem("user"))[4]}</p>
           </ul>
+          </div>
         )}
       </div>
       <div
@@ -102,7 +117,13 @@ const Mypage = () => {
         }}
       >
         <div className="container">
-          <h1>펫 등록</h1>
+          <ul>
+            <li>
+              <h5>펫 등록</h5>
+            </li>
+          </ul>
+          
+          <hr />
           <form onSubmit={addPet}>
             <div className="formbox">
               <div className="mb-3 loginbox2">
@@ -151,38 +172,45 @@ const Mypage = () => {
                 />
               </div>
               <div className="mb-3 loginbox2">
-                <button type="submit" className="btn btn-primary btn2">
+                <button type="submit" className="w-btn-outline w-btn-gray-outline">
                   펫등록
                 </button>
               </div>
             </div>
           </form>
+          
           <input
             type="file"
+            className="inputfile"
             onChange={imgChange}
             accept="image/*"
             capture="camera"
-            style={{ display: "block", margin: "0 auto", marginBottom: "20px" }}
+            
           />
           <button
             onClick={uploadImg}
-            style={{ display: "block", margin: "0 auto" }}
+            className="w-btn-outline w-btn-gray-outline"
+            style={{ display: "block", margin: "0 auto" }
+            
+          }
           >
-            펫 사진 추가
+            펫 사진 업로드
           </button>
+
           {imageUrl && (
-            <div>
-              <h4>추가된 펫 사진</h4>
+            <div className="image-up">
+               
               <img src={imageUrl} alt="" style={{ maxWidth: "100%" }} />
             </div>
           )}
           <br />
           <Link to={"/mypet"} className="linkStyle">
-            <button style={{display: "block", margin:"0 auto" }} >펫 리스트</button>
+            <button className="w-btn-outline w-btn-gray-outline" type="button" style={{display: "block", margin:"0 auto" }} >펫 리스트</button>
           </Link>
           
         </div>
       </div>
+    </div>
     </div>
   );
 };

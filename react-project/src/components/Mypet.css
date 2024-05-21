@@ -1,0 +1,55 @@
+.petbox{
+    padding: 7%;
+    width: 65%;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+.imageSlider {
+    width: 600px;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    z-index: 1;
+    align-items: center; /* 추가: 수직 정렬 */
+    display: flex; /* 추가: flex 컨테이너로 설정 */
+    justify-content: center; /* 추가: 수평 정렬 */
+}
+
+.slide {
+    display: flex;
+    transition: transform 0.5s ease;
+    &.active {
+      transform: translateX(0);
+    }
+    &:not(.active) {
+      transform: translateX(100%);
+    }
+}
+
+.imageSlider-arrow {
+    position: absolute;
+    top: 150px;
+    background-color: rgba(141, 141, 141, 0.5);
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.5s ease;
+    z-index: 10;
+    &.left {
+      margin-left: 25px;
+      right: 550px;
+    }
+    &.right {
+      left: 550px;
+      margin-right: 25px;
+    }
+  }
+  
+  .image{
+    max-width: 100%; /* 이미지가 부모 요소에 맞춰질 수 있도록 설정 */
+    max-height: 100%; /* 이미지가 부모 요소에 맞춰질 수 있도록 설정 */
+  }
+  
