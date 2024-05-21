@@ -18,20 +18,21 @@ app.get("/", (req, res) => {
   app.use("index");
 });
 
-// 이미지 디비넣기
-// app.post("/upload",async (req,res)=>{
-// }
 
-let petnum = 3 // 펫식별자 변수설정
+
 // 펫 정보 등록
 app.post("/petinfo", async(req,res)=>{
   console.log("펫정보 등록 시도")
   console.log(req.body);
-  let {petName, petWeight, petBreed, userid} = req.body;
-  let sql = `insert into pet_infos values(${petnum},'${petName}','${petWeight}','${userid}', to_date(sysdate,'yyyy.mm.dd'),'${petBreed}')`;
+  
+  let {petName, petWeight, userid, petBreed,imgs} = req.body;
+  let sql = `insert into pet_infoss values(pet_infoss_SEQ.NEXTVAL, '${petName}', ${petWeight}, '${userid}', sysdate, '${petBreed}','${imgs}')`;
+  
+  
   try {
     const connection = await conn();
     const result = await connection.execute(sql, [], { autoCommit: true });
+    ;
     console.log("펫정보 등록 성공:", result);
     res.status(200).send({ message: "펫정보가 성공적으로 등록되었습니다." });
   } catch (error) {
@@ -39,6 +40,50 @@ app.post("/petinfo", async(req,res)=>{
     res.status(500).send({ message: "펫정보 등록에 실패했습니다." });
   }
 })
+
+
+// 펫 정보 가져오기
+
+app.post("/mydog", async (req, res) => {
+  console.log("마이펫조회 시도");
+  let data = req.body.user
+  console.log(data)
+  let sql = `select * from pet_infoss where user_id = '${data}' order by pet_idx`;
+  
+  // 여기서 데이터베이스 작업을 수행합니다.
+  try {
+    const connection = await conn();
+    // 이제 connection 객체를 사용하여 데이터베이스 작업을 수행할 수 있습니다.
+
+    // 예: 간단한 쿼리 실행
+    const result = await connection.execute(sql);
+    console.log("result:",result.rows);
+    let petList ={
+      pidx : [],
+      petName : [],
+      petW : [],
+      user : [],
+      time : [],
+      breed : [],
+      img : []
+    }
+    console.log("index : ",result.rows.length)
+    for (let i=0; i<result.rows.length;i++) {
+      petList.pidx.push(result.rows[i][0]),
+      petList.petName.push(result.rows[i][1]),
+      petList.petW.push(result.rows[i][2]),
+      petList.user.push(result.rows[i][3]),
+      petList.time.push(result.rows[i][4]),
+      petList.breed.push(result.rows[i][5])
+      petList.img.push(result.rows[i][6])
+    }
+    res.json(petList)
+    // 연결 해제
+    await connection.close();
+  } catch (error) {
+    console.error("데이터베이스 작업 중 오류가 발생했습니다:", error);
+  }
+});
 
 // 회원가입
 

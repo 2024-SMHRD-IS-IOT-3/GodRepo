@@ -8,6 +8,7 @@ import Iot from "./components/Iot";
 import Join from "./components/Join";
 import LoginLose from "./components/LoginLose";
 import Mypage from "./components/Mypage";
+import Mypet from "./components/Mypet"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/join" element={<Join />}></Route>
         <Route path="/loginlose" element={<LoginLose></LoginLose>}></Route>
         <Route path="/mypage" element={<Mypage></Mypage>}></Route>
+        <Route path="/mypet" element={<Mypet></Mypet>}></Route>
       </Routes>
     </div>
   );

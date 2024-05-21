@@ -1,27 +1,34 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "../axios";
 import "./Mypage.css";
+
+
 
 const Mypage = () => {
   const [petName, setPetName] = useState("");
   const [petWeight, setPetWeight] = useState("");
-  const [petBreed, setPetBreed] = useState("")
-  ;
+  const [petBreed, setPetBreed] = useState("");
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   
+
+
   const addPet = (e) => {
     e.preventDefault();
 
     console.log("펫정보 등록")
-
+    
     axios.post("/petinfo", {
+      
       petName : petName,
       petWeight : petWeight,
+      userid : JSON.parse(sessionStorage.getItem("user"))[0],
       petBreed : petBreed,
-      userid : JSON.parse(sessionStorage.getItem("user"))[0]
+      imgs : imageUrl
     })
+    
   }
 
   const imgChange = (e) => {
@@ -46,6 +53,7 @@ const Mypage = () => {
       });
       setImageUrl(response.data.imagePath);
       console.log("이미지 업로드 완료:", response.data);
+      sessionStorage.setItem("pet", JSON.stringify(response.data));
     } catch (error) {
       console.error("이미지 업로드 실패:", error);
     }
@@ -108,7 +116,7 @@ const Mypage = () => {
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput1"
-                  placeholder="아이디를 입력해주세요"
+                  placeholder="이름입력"
                   onChange={(e)=>{setPetName(e.target.value)}}
                 />
               </div>
@@ -123,7 +131,7 @@ const Mypage = () => {
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput4"
-                  placeholder="이름을 입력해주세요"
+                  placeholder="체중입력"
                   onChange={(e)=>{setPetWeight(e.target.value)}}
                 />
               </div>
@@ -138,7 +146,7 @@ const Mypage = () => {
                   type="text"
                   className="form-control"
                   id="formGroupExampleInput5"
-                  placeholder="사용하실 닉네임을 입력해주세요"
+                  placeholder="견종입력"
                   onChange={(e)=>{setPetBreed(e.target.value)}}
                 />
               </div>
@@ -168,6 +176,11 @@ const Mypage = () => {
               <img src={imageUrl} alt="" style={{ maxWidth: "100%" }} />
             </div>
           )}
+          <br />
+          <Link to={"/mypet"} className="linkStyle">
+            <button style={{display: "block", margin:"0 auto" }} >펫 리스트</button>
+          </Link>
+          
         </div>
       </div>
     </div>
