@@ -1,0 +1,42 @@
+.BoardContainer {
+    padding: 7%;
+    width: 65%;
+    margin-left: 300px;
+}
+
+.Boards {
+    margin-top: 1%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.boardss{
+    display: flex;
+    align-items: center;
+
+}
+.numlist{
+    margin-top: 3%;
+}
+
+.card.text-center a {
+    text-decoration: none;
+    color: black;
+    float: left;
+}
+
+.ulcenter {
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+
+}
+.ulcenter a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
