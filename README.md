@@ -1,6 +1,6 @@
 # IoT 기술을 활용한 반려동물 돌봄 서비스
 <p align="center">
-  <img src="pjmain.PNG">
+  <img src="readmeimg/pjmain.PNG">
 </p>
 
 ## 프로젝트 개요
@@ -16,46 +16,46 @@
 
 ## 시스템 아키텍쳐
 <p align="center">
-  <img src="system.PNG">
+  <img src="readmeimg/system.PNG">
 </p>
 
 ## WEB 페이지
 #### 메인페이지
 <p align="center">
-  <img src="web1.PNG">
+  <img src="readmeimg/web1.PNG">
 </p>
 
 #### 게시판
 <p align="center">
-  <img src="t1.PNG">
+  <img src="readmeimg/t1.PNG">
 </p>
 
 #### 체중데이터 시각화 페이지
 <p align="center">
-  <img src="web2.PNG">
+  <img src="readmeimg/web2.PNG">
 </p>
 
 #### 마이펫 관리 페이지 
 <p align="center">
-  <img src="web3.PNG">
+  <img src="readmeimg/web3.PNG">
 </p>
 
 ## 트러블 슈팅 
 #### 게시판 구현 중 Pagination이 적용되지 않았던 문제
 <p align="center">
-  <img src="t1.PNG">
+  <img src="readmeimg/t1.PNG">
 </p>
 Pagination에 할당된 state와 게시판 목록에 할당된 state가 달라서 서로 영향을 주지 못하는 것을 파악 후,
 Pagination에 초기 state 값으로 할당하여 Pagination을 map 함수 안 index를 활용하여 해결
 
 #### 아두이노 자체적인 무한루프
 <p align="center">
-  <img src="t2.PNG">
+  <img src="readmeimg/t2.PNG">
 </p>
 라즈베리파이에서 실행 시간을 조절하여 아두이노가 실행되는 시간을 같이 조절하여 해결
 
 
 ## 팀원
 <p align="center">
-  <img src="team.PNG">
+  <img src="readmeimg/team.PNG">
 </p>
